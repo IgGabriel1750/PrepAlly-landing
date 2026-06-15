@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrepAlly — Your child's WAEC tutor, living in WhatsApp</title>
+  <meta name="description" content="PrepAlly is a WhatsApp-based WAEC tutor for Nigerian SS students. It teaches one topic at a time, then tests on real past questions. First topic free, ₦5,000/month after." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PrepAlly — Your child's WAEC tutor, living in WhatsApp" />
+  <meta property="og:description" content="Every WAEC subject, taught and drilled, inside the WhatsApp your child already uses. First topic free." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts: system fallback shown first; web fonts swap in -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#F5F7F6',
+            pine: '#0C3B2E',
+            ink: '#15211B',
+            muted: '#5E6B63',
+            whatsapp: '#25D366',
+            gold: '#D9A441',
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'Cambria', 'serif'],
+            sans: ['"Hanken Grotesk"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root { color-scheme: light; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-family: '"Hanken Grotesk"', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    h1, h2, h3, .font-display { font-family: 'Fraunces', Georgia, Cambria, serif; }
+
+    /* Tighten tracking on large display text */
+    .display-tight { letter-spacing: -0.02em; font-optical-sizing: auto; }
+
+    /* Visible, consistent focus rings on every interactive element */
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #0C3B2E;
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    /* Gold underline under a key word (achievement accent, small dose) */
+    .gold-underline {
+      background-image: linear-gradient(#D9A441, #D9A441);
+      background-position: 0 92%;
+      background-repeat: no-repeat;
+      background-size: 100% 0.12em;
+      padding-bottom: 0.02em;
+    }
+
+    /* ---- Hero chat thread motion (the ONE orchestrated moment) ---- */
+    .chat-item {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .chat-item.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .typing-dots { display: inline-flex; gap: 4px; align-items: center; }
+    .typing-dots span {
+      width: 7px; height: 7px; border-radius: 9999px;
+      background: #5E6B63;
+      animation: typing-bounce 1.2s infinite ease-in-out;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes typing-bounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+
+    /* Subtle hover lift on buttons + cards */
+    .lift { transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease; }
+    .lift:hover { transform: translateY(-2px); }
+
+    /* Reduced motion: everything resolves to its final state instantly */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .chat-item { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .typing-dots span { animation: none !important; }
+      .lift { transition: none !important; }
+      .lift:hover { transform: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-paper text-ink antialiased">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="sticky top-0 z-50 bg-paper/90 backdrop-blur border-b border-pine/10">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="#top" class="flex items-center gap-2.5" aria-label="PrepAlly home">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-pine text-paper font-display text-lg font-semibold">P</span>
+          <span class="font-display text-xl font-semibold text-pine">PrepAlly</span>
+        </a>
+        <!-- STUB: replace href with live wa.me/<number> link -->
+        <a href="#"
+           class="lift inline-flex min-h-[44px] items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md">
+          <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-current"><path d="M12.04 2.01a9.94 9.94 0 0 0-8.5 15.06L2 22l5.06-1.5a9.94 9.94 0 1 0 4.98-18.49Zm0 1.86a8.08 8.08 0 0 1 .01 16.16 8.06 8.06 0 0 1-4.11-1.13l-.29-.17-3 .89.9-2.92-.19-.3a8.07 8.07 0 0 1 6.67-12.53Zm4.42 9.7c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.55.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42l-.47-.01c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.7 2.6 4.12 3.64.58.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+          Start on WhatsApp
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== 1. HERO ===================== -->
+    <section class="relative overflow-hidden">
+      <div class="mx-auto max-w-6xl px-5 sm:px-8 py-12 sm:py-16 lg:py-24">
+        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+
+          <!-- Copy -->
+          <div class="max-w-xl">
+            <h1 class="display-tight font-display text-4xl font-semibold leading-[1.08] text-pine sm:text-5xl lg:text-6xl">
+              Your child's WAEC tutor. <span class="gold-underline">Living in WhatsApp.</span>
+            </h1>
+            <p class="mt-6 text-lg leading-relaxed text-ink sm:text-xl">
+              PrepAlly teaches SS students their subjects one topic at a time, then tests them on
+              real past questions. No app to download. No extra lesson to arrange. Just a chat that
+              knows the syllabus.
+            </p>
+
+            <div class="mt-8">
+              <!-- STUB: replace href with live wa.me/<number> link -->
+              <a href="#"
+                 class="lift inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 rounded-full bg-whatsapp px-7 text-base font-semibold text-white shadow-md hover:shadow-lg sm:w-auto">
+                <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6 fill-current"><path d="M12.04 2.01a9.94 9.94 0 0 0-8.5 15.06L2 22l5.06-1.5a9.94 9.94 0 1 0 4.98-18.49Zm0 1.86a8.08 8.08 0 0 1 .01 16.16 8.06 8.06 0 0 1-4.11-1.13l-.29-.17-3 .89.9-2.92-.19-.3a8.07 8.07 0 0 1 6.67-12.53Zm4.42 9.7c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.55.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42l-.47-.01c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.7 2.6 4.12 3.64.58.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+                Start on WhatsApp
+              </a>
+              <p class="mt-3 text-sm text-muted">First topic free. ₦5,000/month after that.</p>
+            </div>
+          </div>
+
+          <!-- Living chat thread -->
+          <div class="relative">
+            <div class="mx-auto w-full max-w-sm rounded-[28px] border border-pine/15 bg-white shadow-xl shadow-pine/10">
+              <!-- Chat header bar -->
+              <div class="flex items-center gap-3 rounded-t-[28px] bg-pine px-4 py-3 text-paper">
+                <span class="grid h-10 w-10 place-items-center rounded-full bg-paper/15 font-display text-base font-semibold">P</span>
+                <div class="leading-tight">
+                  <p class="text-sm font-semibold">PrepAlly</p>
+                  <p class="text-xs text-paper/70">online · teaching Biology</p>
+                </div>
+              </div>
+
+              <!-- Chat body -->
+              <div id="chat-thread" class="flex flex-col gap-2.5 bg-[#EDF1EF] px-3.5 py-4 sm:px-4" aria-label="Example PrepAlly lesson">
+
+                <!-- Incoming (tutor) -->
+                <div class="chat-item flex" data-role="in">
+                  <div class="max-w-[85%] rounded-2xl rounded-tl-sm border border-pine/10 bg-white px-3.5 py-2.5 text-[15px] leading-snug text-ink shadow-sm">
+                    Let's nail <span class="font-semibold">osmosis</span>. It's the movement of water across a semi-permeable membrane, from where water is more concentrated to where it's less concentrated.
+                  </div>
+                </div>
+
+                <div class="chat-item flex" data-role="in">
+                  <div class="max-w-[85%] rounded-2xl rounded-tl-sm border border-pine/10 bg-white px-3.5 py-2.5 text-[15px] leading-snug text-ink shadow-sm">
+                    Quick check — if you drop a fresh plant cell into pure water, does water move <span class="font-semibold">into</span> the cell or <span class="font-semibold">out</span> of it?
+                  </div>
+                </div>
+
+                <!-- Outgoing (student) -->
+                <div class="chat-item flex justify-end" data-role="out">
+                  <div class="max-w-[85%] rounded-2xl rounded-tr-sm bg-whatsapp px-3.5 py-2.5 text-[15px] leading-snug text-white shadow-sm">
+                    Into the cell
+                  </div>
+                </div>
+
+                <div class="chat-item flex" data-role="in">
+                  <div class="max-w-[85%] rounded-2xl rounded-tl-sm border border-pine/10 bg-white px-3.5 py-2.5 text-[15px] leading-snug text-ink shadow-sm">
+                    Correct. The cell takes in water and becomes <span class="font-semibold">turgid</span>. Now a real WAEC past question:
+                  </div>
+                </div>
+
+                <div class="chat-item flex" data-role="in">
+                  <div class="max-w-[88%] rounded-2xl rounded-tl-sm border border-pine/10 bg-white px-3.5 py-2.5 text-[15px] leading-snug text-ink shadow-sm">
+                    The net movement of water molecules through a semi-permeable membrane is called…<br />
+                    <span class="mt-1.5 block text-[14px] text-muted">A. Diffusion&nbsp;&nbsp; B. Osmosis<br />C. Active transport&nbsp;&nbsp; D. Transpiration</span>
+                  </div>
+                </div>
+
+                <div class="chat-item flex justify-end" data-role="out">
+                  <div class="max-w-[85%] rounded-2xl rounded-tr-sm bg-whatsapp px-3.5 py-2.5 text-[15px] leading-snug text-white shadow-sm">
+                    B
+                  </div>
+                </div>
+
+                <div class="chat-item flex" data-role="in">
+                  <div class="max-w-[85%] rounded-2xl rounded-tl-sm border border-pine/10 bg-white px-3.5 py-2.5 text-[15px] leading-snug text-ink shadow-sm">
+                    Exactly — B, osmosis. You've got it. Ready for the next one?
+                  </div>
+                </div>
+
+                <!-- Typing indicator (reused by JS before each incoming bubble) -->
+                <div id="typing-indicator" class="hidden" aria-hidden="true">
+                  <div class="rounded-2xl rounded-tl-sm border border-pine/10 bg-white px-4 py-3 shadow-sm">
+                    <span class="typing-dots"><span></span><span></span><span></span></span>
+                  </div>
+                </div>
+
+              </div>
+              <p class="rounded-b-[28px] bg-[#EDF1EF] px-4 pb-3 text-center text-[11px] text-muted">An example lesson. Real conversations adapt to your child.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 2. THE PROBLEM ===================== -->
+    <section class="bg-white border-y border-pine/10">
+      <div class="mx-auto max-w-2xl px-5 sm:px-8 py-16 sm:py-20 text-center">
+        <h2 class="display-tight font-display text-3xl font-semibold leading-tight text-pine sm:text-4xl">
+          You're paying for lessons you can't see.
+        </h2>
+        <p class="mt-6 text-lg leading-relaxed text-ink">
+          Extra lessons, a home tutor, a stack of past-question booklets — and still no real
+          picture of whether your child is actually learning or just sitting through it. Are they
+          keeping up? Falling behind? Studying the right things? WAEC is months away and you're
+          guessing.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== 3. HOW IT WORKS ===================== -->
+    <section class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
+      <h2 class="display-tight font-display text-3xl font-semibold leading-tight text-pine sm:text-4xl text-center">
+        How it works
+      </h2>
+
+      <ol class="mt-12 grid gap-8 md:grid-cols-3 md:gap-6">
+        <li class="rounded-3xl border border-pine/10 bg-white p-7 shadow-sm">
+          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-pine font-display text-xl font-semibold text-paper">1</span>
+          <h3 class="mt-5 font-display text-xl font-semibold text-pine">Add PrepAlly on WhatsApp.</h3>
+          <p class="mt-3 leading-relaxed text-ink">
+            No app, no signup forms. Just save the number and say hello.
+          </p>
+        </li>
+        <li class="rounded-3xl border border-pine/10 bg-white p-7 shadow-sm">
+          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-pine font-display text-xl font-semibold text-paper">2</span>
+          <h3 class="mt-5 font-display text-xl font-semibold text-pine">Your child picks a subject and starts learning.</h3>
+          <p class="mt-3 leading-relaxed text-ink">
+            PrepAlly teaches one topic at a time — explaining, checking understanding, then
+            practising with real past questions. At your child's pace, any time of day.
+          </p>
+        </li>
+        <li class="rounded-3xl border border-pine/10 bg-white p-7 shadow-sm">
+          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-pine font-display text-xl font-semibold text-paper">3</span>
+          <h3 class="mt-5 font-display text-xl font-semibold text-pine">You see them showing up.</h3>
+          <p class="mt-3 leading-relaxed text-ink">
+            Each week, a simple note on what they studied and how often — so you're never guessing
+            again.
+          </p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===================== 4. PROOF ===================== -->
+    <section class="bg-white border-y border-pine/10">
+      <div class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
+
+        <!-- Block A — product shown -->
+        <div class="mx-auto max-w-2xl text-center">
+          <h2 class="display-tight font-display text-3xl font-semibold leading-tight text-pine sm:text-4xl">
+            See exactly how it teaches.
+          </h2>
+          <p class="mt-6 text-lg leading-relaxed text-ink">
+            No guesswork. This is a real lesson inside WhatsApp — PrepAlly explains the topic,
+            checks your child understood it, then practises with a real WAEC past question.
+          </p>
+        </div>
+
+        <!-- STUB: three real WhatsApp screenshots go here before launch (keep WhatsApp chrome visible) -->
+        <div class="mt-12 grid gap-6 sm:grid-cols-3">
+          <figure class="overflow-hidden rounded-3xl border-2 border-dashed border-pine/25 bg-paper">
+            <div class="flex aspect-[9/16] flex-col items-center justify-center gap-2 p-6 text-center">
+              <span class="rounded-full bg-pine/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-pine">Placeholder</span>
+              <p class="font-display text-lg font-semibold text-pine">[SCREENSHOT 1]</p>
+              <p class="text-sm text-muted">Real WhatsApp lesson — explaining the topic.</p>
+            </div>
+          </figure>
+          <figure class="overflow-hidden rounded-3xl border-2 border-dashed border-pine/25 bg-paper">
+            <div class="flex aspect-[9/16] flex-col items-center justify-center gap-2 p-6 text-center">
+              <span class="rounded-full bg-pine/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-pine">Placeholder</span>
+              <p class="font-display text-lg font-semibold text-pine">[SCREENSHOT 2]</p>
+              <p class="text-sm text-muted">Checking the child understood.</p>
+            </div>
+          </figure>
+          <figure class="overflow-hidden rounded-3xl border-2 border-dashed border-pine/25 bg-paper">
+            <div class="flex aspect-[9/16] flex-col items-center justify-center gap-2 p-6 text-center">
+              <span class="rounded-full bg-pine/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-pine">Placeholder</span>
+              <p class="font-display text-lg font-semibold text-pine">[SCREENSHOT 3]</p>
+              <p class="text-sm text-muted">Practising with a real past question.</p>
+            </div>
+          </figure>
+        </div>
+
+        <!-- Block B — honest first-cohort framing -->
+        <div class="mx-auto mt-20 max-w-2xl rounded-3xl bg-pine px-7 py-10 text-center text-paper sm:px-12 sm:py-12">
+          <h2 class="display-tight font-display text-2xl font-semibold leading-tight sm:text-3xl">
+            We're opening to our first students this term.
+          </h2>
+          <p class="mt-5 text-lg leading-relaxed text-paper/90">
+            PrepAlly is built and running. We're bringing on our first group of students now and
+            growing carefully, so every child gets the attention they need. You're early — which
+            means you get in before everyone else does.
+          </p>
+        </div>
+
+        <!-- Block C — testimonials (PLACEHOLDER — must be replaced before launch) -->
+        <div class="mt-20">
+          <h2 class="display-tight font-display text-3xl font-semibold leading-tight text-pine sm:text-4xl text-center">
+            What parents are saying.
+          </h2>
+
+          <!-- STUB: replace all three with real, consented tester quotes before launch -->
+          <div class="mt-10 grid gap-6 md:grid-cols-3">
+            <figure class="rounded-3xl border-2 border-dashed border-gold/60 bg-paper p-7">
+              <p class="text-xs font-bold uppercase tracking-wide text-gold">Placeholder — do not ship</p>
+              <blockquote class="mt-3 font-display text-lg font-semibold text-pine">
+                [TESTIMONIAL 1 — parent quote goes here]
+              </blockquote>
+              <p class="mt-3 text-sm italic leading-relaxed text-muted">
+                Replace with real tester quote before launch. ~2 sentences, parent voice, names a
+                specific subject or change they saw.
+              </p>
+              <figcaption class="mt-4 text-sm font-semibold text-ink">— [Parent name], [child's class]</figcaption>
+            </figure>
+
+            <figure class="rounded-3xl border-2 border-dashed border-gold/60 bg-paper p-7">
+              <p class="text-xs font-bold uppercase tracking-wide text-gold">Placeholder — do not ship</p>
+              <blockquote class="mt-3 font-display text-lg font-semibold text-pine">
+                [TESTIMONIAL 2 — parent quote goes here]
+              </blockquote>
+              <p class="mt-3 text-sm italic leading-relaxed text-muted">
+                Replace with real tester quote before launch. ~2 sentences, parent voice, names a
+                specific subject or change they saw.
+              </p>
+              <figcaption class="mt-4 text-sm font-semibold text-ink">— [Parent name], [child's class]</figcaption>
+            </figure>
+
+            <figure class="rounded-3xl border-2 border-dashed border-gold/60 bg-paper p-7">
+              <p class="text-xs font-bold uppercase tracking-wide text-gold">Placeholder — do not ship</p>
+              <blockquote class="mt-3 font-display text-lg font-semibold text-pine">
+                [TESTIMONIAL 3 — parent quote goes here]
+              </blockquote>
+              <p class="mt-3 text-sm italic leading-relaxed text-muted">
+                Replace with real tester quote before launch. ~2 sentences, parent voice, names a
+                specific subject or change they saw.
+              </p>
+              <figcaption class="mt-4 text-sm font-semibold text-ink">— [Parent name], [child's class]</figcaption>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== 5. TRUST BLOCK ===================== -->
+    <section class="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-24">
+
+      <!-- Price-as-value -->
+      <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div class="max-w-xl">
+          <h2 class="display-tight font-display text-3xl font-semibold leading-tight text-pine sm:text-4xl">
+            One tutor. Every subject. <span class="gold-underline">₦5,000 a month.</span>
+          </h2>
+          <p class="mt-6 text-lg leading-relaxed text-ink">
+            A single private lesson for one subject can cost more than that in a week. PrepAlly
+            teaches your child across all their WAEC subjects — explaining, testing, and drilling
+            real past questions — every day, for one flat monthly fee. No per-subject charge. No
+            per-hour clock running.
+          </p>
+        </div>
+
+        <!-- Clean price card — number presented plainly -->
+        <div class="rounded-3xl border border-pine/15 bg-white p-8 shadow-sm">
+          <p class="text-sm font-semibold uppercase tracking-wide text-muted">PrepAlly</p>
+          <div class="mt-3 flex items-baseline gap-2">
+            <span class="font-display text-5xl font-semibold text-pine">₦5,000</span>
+            <span class="text-lg text-muted">/ month</span>
+          </div>
+          <ul class="mt-6 space-y-3 text-ink">
+            <li class="flex gap-3">
+              <svg aria-hidden="true" viewBox="0 0 20 20" class="mt-0.5 h-5 w-5 flex-none fill-pine"><path d="M8.1 13.4 4.7 10l-1.2 1.2 4.6 4.6 8.4-8.4-1.2-1.2z"/></svg>
+              Every WAEC subject — no per-subject charge
+            </li>
+            <li class="flex gap-3">
+              <svg aria-hidden="true" viewBox="0 0 20 20" class="mt-0.5 h-5 w-5 flex-none fill-pine"><path d="M8.1 13.4 4.7 10l-1.2 1.2 4.6 4.6 8.4-8.4-1.2-1.2z"/></svg>
+              Taught, tested, and drilled on past questions
+            </li>
+            <li class="flex gap-3">
+              <svg aria-hidden="true" viewBox="0 0 20 20" class="mt-0.5 h-5 w-5 flex-none fill-pine"><path d="M8.1 13.4 4.7 10l-1.2 1.2 4.6 4.6 8.4-8.4-1.2-1.2z"/></svg>
+              Weekly note to you on how they're studying
+            </li>
+            <li class="flex gap-3">
+              <svg aria-hidden="true" viewBox="0 0 20 20" class="mt-0.5 h-5 w-5 flex-none fill-pine"><path d="M8.1 13.4 4.7 10l-1.2 1.2 4.6 4.6 8.4-8.4-1.2-1.2z"/></svg>
+              First topic free — cancel anytime
+            </li>
+          </ul>
+          <!-- STUB: replace href with live wa.me/<number> link -->
+          <a href="#"
+             class="lift mt-7 inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 rounded-full bg-whatsapp px-7 text-base font-semibold text-white shadow-md hover:shadow-lg">
+            <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6 fill-current"><path d="M12.04 2.01a9.94 9.94 0 0 0-8.5 15.06L2 22l5.06-1.5a9.94 9.94 0 1 0 4.98-18.49Zm0 1.86a8.08 8.08 0 0 1 .01 16.16 8.06 8.06 0 0 1-4.11-1.13l-.29-.17-3 .89.9-2.92-.19-.3a8.07 8.07 0 0 1 6.67-12.53Zm4.42 9.7c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.55.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42l-.47-.01c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.7 2.6 4.12 3.64.58.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+            Start on WhatsApp
+          </a>
+          <p class="mt-3 text-center text-sm text-muted">Your child's first topic is free — see if it works before you pay.</p>
+        </div>
+      </div>
+
+      <!-- Safety + Founder -->
+      <div class="mt-16 grid gap-6 md:grid-cols-2">
+        <div class="rounded-3xl border border-pine/10 bg-white p-8 shadow-sm">
+          <h3 class="display-tight font-display text-2xl font-semibold text-pine">
+            Built for studying — and nothing else.
+          </h3>
+          <p class="mt-4 leading-relaxed text-ink">
+            PrepAlly only does one thing: teach the WAEC syllabus. It won't chat about anything
+            off-topic, it lives inside the WhatsApp you already watch, and there's nothing for your
+            child to download, browse, or stumble into. You always know what it's for.
+          </p>
+        </div>
+        <div class="rounded-3xl border border-pine/10 bg-white p-8 shadow-sm">
+          <h3 class="display-tight font-display text-2xl font-semibold text-pine">
+            Made in Nigeria, by someone who cares whether your child passes.
+          </h3>
+          <p class="mt-4 leading-relaxed text-ink">
+            PrepAlly is built by a Nigerian who knows exactly what WAEC means for a family —
+            building a tutor that's actually affordable. Not a faceless app. Questions? You can
+            reach me directly.
+          </p>
+          <!-- STUB: set href to real WhatsApp or email contact (TBD by Gabriel) -->
+          <a href="#"
+             class="lift mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-pine/30 px-5 py-2.5 text-sm font-semibold text-pine hover:bg-pine/5">
+            Reach me directly
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 6. CLOSING CTA ===================== -->
+    <section class="bg-pine text-paper">
+      <div class="mx-auto max-w-3xl px-5 sm:px-8 py-20 sm:py-24 text-center">
+        <h2 class="display-tight font-display text-3xl font-semibold leading-tight sm:text-5xl">
+          Give your child a tutor that's always there.
+        </h2>
+        <p class="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-paper/90">
+          Every WAEC subject, taught and drilled, inside the WhatsApp they already use. First topic
+          free — see for yourself before you pay a naira.
+        </p>
+        <div class="mt-9">
+          <!-- STUB: replace href with live wa.me/<number> link -->
+          <a href="#"
+             class="lift inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 rounded-full bg-whatsapp px-8 text-base font-semibold text-white shadow-lg hover:shadow-xl sm:w-auto">
+            <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6 fill-current"><path d="M12.04 2.01a9.94 9.94 0 0 0-8.5 15.06L2 22l5.06-1.5a9.94 9.94 0 1 0 4.98-18.49Zm0 1.86a8.08 8.08 0 0 1 .01 16.16 8.06 8.06 0 0 1-4.11-1.13l-.29-.17-3 .89.9-2.92-.19-.3a8.07 8.07 0 0 1 6.67-12.53Zm4.42 9.7c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.55.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42l-.47-.01c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.7 2.6 4.12 3.64.58.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+            Start on WhatsApp
+          </a>
+          <p class="mt-3 text-sm text-paper/70">₦5,000/month for everything. Cancel anytime.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="bg-pine border-t border-paper/10 text-paper/70">
+      <div class="mx-auto max-w-6xl px-5 sm:px-8 py-8 flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-paper/15 font-display text-base font-semibold text-paper">P</span>
+          <span class="font-display text-lg font-semibold text-paper">PrepAlly</span>
+        </div>
+        <p class="text-sm">A WAEC tutor that lives in WhatsApp. Made in Nigeria.</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // ---- The one orchestrated motion moment: hero chat thread typing itself out ----
+    (function () {
+      var thread = document.getElementById('chat-thread');
+      if (!thread) return;
+
+      var items = Array.prototype.slice.call(thread.querySelectorAll('.chat-item'));
+      var typing = document.getElementById('typing-indicator');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Reduced motion (or no support): show everything immediately, no animation.
+      if (reduce) {
+        items.forEach(function (el) { el.classList.add('is-visible'); });
+        return;
+      }
+
+      // Keep the typing indicator at the end of the thread while it runs.
+      // Toggle via inline style so it overrides the `hidden` class reliably.
+      function showTyping() {
+        thread.appendChild(typing);
+        typing.style.display = 'flex';
+      }
+      function hideTyping() {
+        typing.style.display = 'none';
+      }
+
+      var i = 0;
+      function next() {
+        if (i >= items.length) { hideTyping(); return; }
+        var el = items[i];
+        var isIncoming = el.getAttribute('data-role') === 'in';
+
+        if (isIncoming) {
+          showTyping();
+          setTimeout(function () {
+            hideTyping();
+            el.classList.add('is-visible');
+            i++;
+            setTimeout(next, 350);
+          }, 600);
+        } else {
+          // Outgoing (student) replies appear without a typing indicator.
+          el.classList.add('is-visible');
+          i++;
+          setTimeout(next, 500);
+        }
+      }
+
+      // Small initial beat before the first bubble.
+      setTimeout(next, 450);
+    })();
+  </script>
+
+</body>
+</html>
