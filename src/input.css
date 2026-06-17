@@ -13,18 +13,18 @@ h1, h2, h3, .font-display { font-family: 'Fraunces', Georgia, Cambria, serif; }
 
 /* Visible, consistent focus rings on every interactive element */
 a:focus-visible, button:focus-visible {
-  outline: 3px solid #0C3B2E;
+  outline: 3px solid #1A2A4A;
   outline-offset: 2px;
   border-radius: 6px;
 }
 
-/* Gold underline under a key word (achievement accent, small dose) */
+/* Gold underline under a key word (achievement accent, a whisper) */
 .gold-underline {
-  background-image: linear-gradient(#D9A441, #D9A441);
-  background-position: 0 92%;
+  background-image: linear-gradient(#E0A43B, #E0A43B);
+  background-position: 0 100%;
   background-repeat: no-repeat;
-  background-size: 100% 0.12em;
-  padding-bottom: 0.02em;
+  background-size: 100% 2px;
+  padding-bottom: 0.08em;
 }
 
 /* ---- Hero chat thread motion (the ONE orchestrated moment) ---- */
@@ -41,7 +41,7 @@ a:focus-visible, button:focus-visible {
 .typing-dots { display: inline-flex; gap: 4px; align-items: center; }
 .typing-dots span {
   width: 7px; height: 7px; border-radius: 9999px;
-  background: #5E6B63;
+  background: #5A6B64;
   animation: typing-bounce 1.2s infinite ease-in-out;
 }
 .typing-dots span:nth-child(2) { animation-delay: 0.15s; }

@@ -4,12 +4,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        paper: "#F5F7F6",
-        pine: "#0C3B2E",
-        ink: "#15211B",
-        muted: "#5E6B63",
-        whatsapp: "#25D366",
-        gold: "#D9A441",
+        // Foundation — neutrals (this is what adds depth)
+        paper: "#F4F6F5",
+        surface: "#FFFFFF",
+        mist: "#E9EEEC",
+        hairline: "#D7DEDB",
+        muted: "#5A6B64",
+        ink: "#16202A",
+        // Brand — from the logo
+        navy: "#1A2A4A",
+        "navy-deep": "#11203B",
+        green: "#1FB257",
+        "green-soft": "#D8F0E0",
+        "green-hover": "#1A9D4C",
+        // Warmth — micro-accent, tiny doses only
+        gold: "#E0A43B",
       },
       fontFamily: {
         display: ["Fraunces", "Georgia", "Cambria", "serif"],
