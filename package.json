@@ -1,0 +1,22 @@
+{
+  "name": "prepally-landing",
+  "version": "1.0.0",
+  "description": "A single static marketing page for **PrepAlly** — a WhatsApp-based WAEC tutor for Nigerian senior-secondary students. The page's one job: get a visitor to tap **Start on WhatsApp**.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i src/input.css -o assets/styles.css --minify",
+    "watch": "tailwindcss -i src/input.css -o assets/styles.css --watch",
+    "serve": "python3 -m http.server 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:38461/git/IgGabriel1750/PrepAlly-landing"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
